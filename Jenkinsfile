@@ -5,6 +5,9 @@ pipeline {
             steps{
                 bat 'mvn clean package'
             }
+            post{
+                 archiveArtifacts artifacts: '**/target/*.war'
+            }
         }
         stage('deploy to stage'){
     	    steps{   
