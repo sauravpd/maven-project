@@ -5,7 +5,7 @@ pipeline {
             steps{
                 bat 'mvn clean package'
             }
-            post{
+            Post{
                  archiveArtifacts artifacts: '**/target/*.war'
             }
         }
