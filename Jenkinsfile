@@ -7,4 +7,18 @@ pipeline {
             }
         }
     }
+    stage('deploy to stage')
+    {
+    	steps
+    	{
+            build job:"deployToStaging"
+    	}    
+   }
+   stage('deploy to prod')
+    {
+    	steps
+    	{
+            build job:"deployToProd"
+    	}    
+   }
 }
