@@ -7,19 +7,36 @@ pipeline {
             }
             post {
                 success {
-                      archiveArtifacts artifacts: '**/target/*.war'
+                    echo 'Now Archiving...'
+                    archiveArtifacts artifacts: '**/target/*.war'
                 }
             }
         }
-        stage('deploy to stage'){
-    	    steps {   
-             build job:"deployToStaging"
-    	    }    
+        stage ('Deploy to Staging'){
+            steps {
+                build job: 'deployToStaging'
+            }
         }
-        stage('deploy to prod'){
-    	    steps {
-                build job:"deployToProd"
-    	    }    
+
+        stage ('Deploy to Production'){
+            steps{
+                timeout(time:5, unit:'DAYS'){
+                    input message:'Approve PRODUCTION Deployment?'
+                }
+
+                build job: 'deployToProd'
+            }
+            post {
+                success {
+                    echo 'Code deployed to Production.'
+                }
+
+                failure {
+                    echo ' Deployment failed.'
+                }
+            }
         }
+
+
     }
 }
